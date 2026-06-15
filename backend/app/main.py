@@ -1,11 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from datetime import datetime
 from app.database import firebase_config
 from app.services.ocr_service import OCRService
 from pydantic import BaseModel
 from app.services.gemini_service import gemini_service
-from fastapi import File, UploadFile
-from app.services.ocr_service import OCRService
 
 ocr_service = OCRService()
 
@@ -39,14 +37,13 @@ def get_info():
 
 @app.post("/api/v1/scan", tags=["OCR Services"])
 async def scan_note(filename: str):
-
     if not OCRService.validate_file(filename):
         return {"status": "error", "message": "Desteklenmeyen dosya formatı!"}
     
     result = OCRService.process_image(b"fake_data")
     return {"data": result}
 
-        class AIRequest(BaseModel):
+class AIRequest(BaseModel):
     text: str
 
 @app.post("/api/summarize")
@@ -63,9 +60,7 @@ async def create_quiz(request: AIRequest):
 async def process_image_ocr(file: UploadFile = File(...)):
     try:
         image_bytes = await file.read()
-        
         text = ocr_service.extract_text(image_bytes) 
-        
         return {"text": text}
     except Exception as e:
         return {"text": f"Hata: Fotoğraf okunamadı. Detay: {str(e)}"}

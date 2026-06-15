@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from datetime import datetime
 from app.database import firebase_config
 from app.services.ocr_service import OCRService
+from pydantic import BaseModel
+from app.services.gemini_service import gemini_service
 
 app = FastAPI(
     title="BilgeNot API Service",

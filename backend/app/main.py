@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from datetime import datetime
 from app.database import firebase_config
-from backend.app.services.ocr_service import OCRService
+from app.services.ocr_service import OCRService
 
 app = FastAPI(
     title="BilgeNot API Service",

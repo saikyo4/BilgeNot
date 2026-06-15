@@ -44,7 +44,7 @@ async def scan_note(filename: str):
         return {"status": "error", "message": "Desteklenmeyen dosya formatı!"}
     
     result = OCRService.process_image(b"fake_data")
-    return {
+    return {"data": result}
         "status": "success",
         "request_file": filename,
         "data": result

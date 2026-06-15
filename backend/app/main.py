@@ -4,6 +4,10 @@ from app.database import firebase_config
 from app.services.ocr_service import OCRService
 from pydantic import BaseModel
 from app.services.gemini_service import gemini_service
+from fastapi import File, UploadFile
+from app.services.ocr_service import OCRService
+
+ocr_service = OCRService()
 
 app = FastAPI(
     title="BilgeNot API Service",

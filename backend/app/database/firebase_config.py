@@ -4,7 +4,7 @@ import os
 
 
 current_dir = os.path.dirname(__file__)
-path = os.path.join(current_dir, "serviceAccountKey.json")
+path = "/etc/secrets/serviceAccountKey.json"
 
 
 if not firebase_admin._apps:

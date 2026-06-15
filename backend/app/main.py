@@ -61,4 +61,14 @@ async def create_summary(request: AIRequest):
 async def create_quiz(request: AIRequest):
     result = gemini_service.generate_quiz(request.text)
     return {"data": result}
-    }
+    
+@app.post("/api/ocr")
+async def process_image_ocr(file: UploadFile = File(...)):
+    try:
+        image_bytes = await file.read()
+        
+        text = ocr_service.extract_text(image_bytes) 
+        
+        return {"text": text}
+    except Exception as e:
+        return {"text": f"Hata: Fotoğraf okunamadı. Detay: {str(e)}"}

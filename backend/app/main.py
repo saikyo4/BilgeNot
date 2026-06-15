@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from datetime import datetime
-from backend.app.database import firebase_config
+from app.database import firebase_config
 from backend.app.services.ocr_service import OCRService
 
 app = FastAPI(

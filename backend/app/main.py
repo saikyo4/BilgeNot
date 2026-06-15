@@ -44,4 +44,17 @@ async def scan_note(filename: str):
         "status": "success",
         "request_file": filename,
         "data": result
+
+        class AIRequest(BaseModel):
+    text: str
+
+@app.post("/api/summarize")
+async def create_summary(request: AIRequest):
+    result = gemini_service.summarize_text(request.text)
+    return {"data": result}
+
+@app.post("/api/quiz")
+async def create_quiz(request: AIRequest):
+    result = gemini_service.generate_quiz(request.text)
+    return {"data": result}
     }

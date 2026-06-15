@@ -45,9 +45,6 @@ async def scan_note(filename: str):
     
     result = OCRService.process_image(b"fake_data")
     return {"data": result}
-        "status": "success",
-        "request_file": filename,
-        "data": result
 
         class AIRequest(BaseModel):
     text: str

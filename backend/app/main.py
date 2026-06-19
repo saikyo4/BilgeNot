@@ -5,6 +5,7 @@ from app.services.ocr_service import OCRService
 from pydantic import BaseModel
 from app.services.gemini_service import gemini_service
 from app.services.db_service import DBService
+from fastapi.middleware.cors import CORSMiddleware
 
 ocr_service = OCRService()
 
@@ -12,6 +13,14 @@ app = FastAPI(
     title="BilgeNot API Service",
     description="Core backend services for BilgeNot AI Assistant",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 START_TIME = datetime.now().isoformat()

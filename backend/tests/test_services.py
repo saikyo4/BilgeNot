@@ -2,9 +2,9 @@ import io
 
 from PIL import Image
 
-from backend.app.services.ocr_service import OCRService
-from backend.app.services import gemini_service as gs
-from backend.app.services import db_service as dbs
+from app.services.ocr_service import OCRService
+from app.services import gemini_service as gs
+from app.services import db_service as dbs
 
 
 def _blank_image_bytes():
@@ -40,7 +40,6 @@ def test_validate_file_rejects_others():
 
 
 # --- LLM (Gemini) servisi testleri ---
-# Gercek API cagrisi yapmadan, bos girdi davranisini test ediyoruz.
 
 def test_summarize_empty_text():
     service = gs.GeminiService()
@@ -53,10 +52,8 @@ def test_quiz_empty_text():
 
 
 # --- Veritabani servisi testi ---
-# DB devre disiyken cokmedigini ve None dondugunu test ediyoruz.
 
 def test_db_save_handles_no_connection(monkeypatch):
-    # firebase baglantisini gecici olarak None yap
     monkeypatch.setattr(dbs.firebase_config, "db", None)
     result = dbs.DBService.save_result("summarize", "girdi", "cikti")
     assert result is None

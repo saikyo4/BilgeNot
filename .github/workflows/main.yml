@@ -26,5 +26,6 @@ jobs:
         pip install -r backend/requirements.txt
 
     - name: Run Unit Tests with Coverage
+      working-directory: backend
       run: |
-        python -m pytest backend/tests/ --cov=backend/app --cov-report=term-missing
+        python -m pytest tests/ --cov=app --cov-report=term-missing

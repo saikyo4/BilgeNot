@@ -3,7 +3,7 @@ import io
 import pytest
 from PIL import Image
 
-from backend.app.services.ocr_service import OCRService
+from app.services.ocr_service import OCRService
 
 
 def _make_test_image_bytes():

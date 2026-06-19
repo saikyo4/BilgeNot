@@ -60,7 +60,22 @@ async def create_quiz(request: AIRequest):
 async def process_image_ocr(file: UploadFile = File(...)):
     try:
         image_bytes = await file.read()
+        # GECICI TESHIS: sunucuya ulasan ham fotografi diske kaydet
+        with open("/tmp/last_upload.png", "wb") as f:
+            f.write(image_bytes)
         text = OCRService.process_image(image_bytes)
         return {"text": text}
     except Exception as e:
         return {"text": f"Hata: Fotoğraf okunamadı. Detay: {str(e)}"}
+
+
+from fastapi.responses import FileResponse
+import os
+
+
+@app.get("/api/debug/last-image")
+async def get_last_image():
+    path = "/tmp/last_upload.png"
+    if os.path.exists(path):
+        return FileResponse(path, media_type="image/png")
+    return {"status": "henüz bir fotoğraf yüklenmedi"}

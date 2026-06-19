@@ -18,7 +18,7 @@ jobs:
     - name: Install Tesseract OCR
       run: |
         sudo apt-get update
-        sudo apt-get install -y tesseract-ocr tesseract-ocr-tur
+        sudo apt-get install -y tesseract-ocr tesseract-ocr-tur tesseract-ocr-osd
 
     - name: Install Dependencies
       run: |

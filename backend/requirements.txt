@@ -6,5 +6,5 @@ python-dotenv==1.0.0
 pytest==7.4.4
 httpx==0.26.0
 firebase-admin
-google-generativeai
+google-genai
 Pillow==10.2.0

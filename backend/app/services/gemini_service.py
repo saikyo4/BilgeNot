@@ -6,7 +6,7 @@ class GeminiService:
     def __init__(self):
         api_key = os.getenv("GEMINI_API_KEY")
         self.client = genai.Client(api_key=api_key) if api_key else None
-        self.model_name = "gemini-2.0-flash"
+        self.model_name = "gemini-2.5-flash"
 
     def _generate(self, prompt: str) -> str:
         if self.client is None:

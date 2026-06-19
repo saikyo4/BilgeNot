@@ -3,40 +3,49 @@ import re
 import time
 
 import pytesseract
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageFilter
 
 
 class OCRService:
     @staticmethod
-    def process_image(image_bytes: bytes):
-        """
-        Görselden Tesseract OCR ile metin ayıklar (Türkçe + İngilizce).
-        Fotoğrafın dönük (ters/yan) olma ihtimaline karşı otomatik düzeltir.
-        """
-        image = Image.open(io.BytesIO(image_bytes))
+    def _preprocess(image: Image.Image) -> Image.Image:
+        proc = image.convert("L")
 
-        # 1) Telefonun gömdüğü EXIF dönme bilgisini uygula (en sık sorun bu)
+        long_edge = max(proc.size)
+        target = 1600
+        if long_edge < target:
+            scale = min(target / long_edge, 3.0)
+            proc = proc.resize(
+                (int(proc.width * scale), int(proc.height * scale)),
+                Image.Resampling.LANCZOS,
+            )
+
+        proc = ImageOps.autocontrast(proc, cutoff=2)
+        proc = proc.filter(ImageFilter.UnsharpMask(radius=1.5, percent=120, threshold=3))
+
+        return proc
+
+    @staticmethod
+    def process_image(image_bytes: bytes):
+        image = Image.open(io.BytesIO(image_bytes))
         image = ImageOps.exif_transpose(image)
 
-        # 2) Tesseract'in kendi yön algılamasi (OSD) ile ek düzeltme dene
         try:
             osd = pytesseract.image_to_osd(image)
             match = re.search(r"Rotate: (\d+)", osd)
             if match:
                 angle = int(match.group(1))
                 if angle:
-                    # OSD "saat yonunde su kadar donmus" der; geri cevirmek icin -angle
                     image = image.rotate(-angle, expand=True)
         except Exception:
-            # OSD bazen kucuk/az yazili gorsellerde calismaz; sorun degil, devam
             pass
 
-        # 3) Metni çıkar
-        extracted_text = pytesseract.image_to_string(image, lang="tur+eng").strip()
+        proc = OCRService._preprocess(image)
 
-        # 4) Ortalama güven skoru
+        extracted_text = pytesseract.image_to_string(proc, lang="tur+eng").strip()
+
         data = pytesseract.image_to_data(
-            image, lang="tur+eng", output_type=pytesseract.Output.DICT
+            proc, lang="tur+eng", output_type=pytesseract.Output.DICT
         )
         confidences = []
         for c in data.get("conf", []):

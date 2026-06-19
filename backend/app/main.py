@@ -4,6 +4,7 @@ from app.database import firebase_config
 from app.services.ocr_service import OCRService
 from pydantic import BaseModel
 from app.services.gemini_service import gemini_service
+from app.services.db_service import DBService
 
 ocr_service = OCRService()
 
@@ -49,11 +50,14 @@ class AIRequest(BaseModel):
 @app.post("/api/summarize")
 async def create_summary(request: AIRequest):
     result = gemini_service.summarize_text(request.text)
+    DBService.save_result("summarize", request.text, result)
     return {"data": result}
+
 
 @app.post("/api/quiz")
 async def create_quiz(request: AIRequest):
     result = gemini_service.generate_quiz(request.text)
+    DBService.save_result("quiz", request.text, result)
     return {"data": result}
     
 @app.post("/api/ocr")

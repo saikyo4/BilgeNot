@@ -8,3 +8,4 @@ httpx==0.26.0
 firebase-admin
 google-genai
 Pillow==10.2.0
+pytest-cov

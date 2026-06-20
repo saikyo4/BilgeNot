@@ -1,9 +1,8 @@
 import io
-import re
 import time
 
 import pytesseract
-from PIL import Image, ImageOps, ImageFilter
+from PIL import Image, ImageOps
 
 
 class OCRService:
@@ -11,24 +10,17 @@ class OCRService:
     def _preprocess(image: Image.Image) -> Image.Image:
         proc = image.convert("L")
 
+        # Cok buyuk gorselleri kucult (hiz icin) - Tesseract az pikselde hizli calisir
+        max_edge = 1800
         long_edge = max(proc.size)
-        target = 1600
-        if long_edge < target:
-            scale = min(target / long_edge, 2.5)
-            proc = proc.resize(
-                (int(proc.width * scale), int(proc.height * scale)),
-                Image.Resampling.LANCZOS,
-            )
-        elif long_edge > 2500:
-            scale = 2500 / long_edge
+        if long_edge > max_edge:
+            scale = max_edge / long_edge
             proc = proc.resize(
                 (int(proc.width * scale), int(proc.height * scale)),
                 Image.Resampling.LANCZOS,
             )
 
         proc = ImageOps.autocontrast(proc, cutoff=2)
-        proc = proc.filter(ImageFilter.UnsharpMask(radius=1.5, percent=120, threshold=3))
-
         return proc
 
     @staticmethod
@@ -38,8 +30,9 @@ class OCRService:
 
         proc = OCRService._preprocess(image)
 
+        # Tek gecisde hem metin hem guven skoru
         data = pytesseract.image_to_data(
-            proc, lang="tur+eng", output_type=pytesseract.Output.DICT
+            proc, lang="tur", output_type=pytesseract.Output.DICT
         )
 
         kelimeler = []

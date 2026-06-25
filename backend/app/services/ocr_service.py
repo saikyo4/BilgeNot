@@ -10,7 +10,6 @@ class OCRService:
     def _preprocess(image: Image.Image) -> Image.Image:
         proc = image.convert("L")
 
-        # Cok buyuk gorselleri kucult (hiz icin) - Tesseract az pikselde hizli calisir
         max_edge = 1800
         long_edge = max(proc.size)
         if long_edge > max_edge:
@@ -30,7 +29,6 @@ class OCRService:
 
         proc = OCRService._preprocess(image)
 
-        # Tek gecisde hem metin hem guven skoru
         data = pytesseract.image_to_data(
             proc, lang="tur", output_type=pytesseract.Output.DICT
         )

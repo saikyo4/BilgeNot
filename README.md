@@ -1,19 +1,39 @@
-# BilgeNot - Yapay Zeka Destekli Ders Notu Asistanı
+# BilgeNot — Yapay Zekâ Destekli Mobil Ders Notu Asistanı
 
-Bu proje, öğrencilerin ders notlarını OCR teknolojisi ile dijitalleştiren ve yapay zeka ile özetleyen bir sistemdir.
+BilgeNot, öğrencilerin ders notlarını fotoğraftan dijitale çeviren ve yapay zekâ ile özet veya çoktan seçmeli test üreten, baştan sona çalışan bir sistemdir. Kullanıcı bir ders notunun fotoğrafını çeker, sistem yazıyı metne çevirir, ardından bu metinden özet ya da test üretip sonucu veritabanına kaydeder.
 
-## 🚀 Mevcut Özellikler (Vize Aşaması)
-- **Backend:** FastAPI mimarisi üzerine kurulu, katmanlı yapı (Layered Architecture).
-- **Database:** Firebase Firestore entegrasyonu tamamlandı.
-- **OCR Service:** Simüle edilmiş OCR motoru ve dosya doğrulama sistemi.
-- **CI/CD:** GitHub Actions ile otomatik test süreçleri (Pipeline) aktif.
+## Özellikler
 
-## 🛠️ Teknik Detaylar
-- **Dil:** Python 3.12
-- **Framework:** FastAPI
-- **Test:** Pytest (%20+ coverage)
-- **Konteynerleştirme:** Dockerfile hazır.
+- Fotoğraftan metin çıkarma (Türkçe destekli)
+- Metinden otomatik özet üretme
+- Metinden çoktan seçmeli test üretme
+- Üretilen sonuçların veritabanına kaydedilmesi
+- Hem Android hem web üzerinde çalışma
+- Bulutta canlı yayın
 
-## 📋 Kurulum
-1. `pip install -r backend/requirements.txt`
-2. `uvicorn backend.app.main:app --reload`
+## Kullanılan Teknolojiler
+
+- Sunucu: Python 3.12, FastAPI
+- Metin tanıma: Tesseract
+- Yapay zekâ: Google Gemini
+- Veritabanı: Firebase Firestore
+- Paketleme: Docker
+- Otomatik test ve dağıtım: GitHub Actions
+- Yayın: Render (sunucu), Netlify (web)
+
+## Test
+
+Proje birim testleriyle kontrol edilmektedir. Test kapsamı %66 düzeyindedir ve tüm testler başarıyla geçmektedir.
+
+## Canlı Adresler
+
+- Web uygulaması: https://tiny-paprenjak-c6ebad.netlify.app
+- Sunucu: https://bilgenot.onrender.com
+- API dokümantasyonu: https://bilgenot.onrender.com/docs
+
+## Kurulum
+
+1. Gerekli kütüphaneleri yükleyin:
+   `pip install -r backend/requirements.txt`
+2. Sunucuyu başlatın:
+   `uvicorn backend.app.main:app --reload`

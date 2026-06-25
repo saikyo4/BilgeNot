@@ -22,20 +22,20 @@ def test_get_info():
 
 
 def test_scan_rejects_bad_extension():
-    # Desteklenmeyen uzanti -> hata mesaji donmeli
+
     response = client.post("/api/v1/scan", params={"filename": "dosya.pdf"})
     assert response.status_code == 200
     assert response.json()["status"] == "error"
 
 
 def test_ocr_requires_file():
-    # Dosya gondermeden cagirinca FastAPI 422 (eksik alan) donmeli
+
     response = client.post("/api/ocr")
     assert response.status_code == 422
 
 
 def test_summarize_requires_text():
-    # Bos govde -> 422 (text alani zorunlu)
+
     response = client.post("/api/summarize", json={})
     assert response.status_code == 422
 

@@ -14,7 +14,6 @@ def _blank_image_bytes():
     return buffer.getvalue()
 
 
-# --- OCR servisi testleri ---
 
 def test_ocr_returns_all_keys():
     result = OCRService.process_image(_blank_image_bytes())
@@ -39,7 +38,6 @@ def test_validate_file_rejects_others():
     assert OCRService.validate_file("z.txt") is False
 
 
-# --- LLM (Gemini) servisi testleri ---
 
 def test_summarize_empty_text():
     service = gs.GeminiService()
@@ -50,8 +48,6 @@ def test_quiz_empty_text():
     service = gs.GeminiService()
     assert service.generate_quiz("") == "Quiz oluşturulacak metin bulunamadı."
 
-
-# --- Veritabani servisi testi ---
 
 def test_db_save_handles_no_connection(monkeypatch):
     monkeypatch.setattr(dbs.firebase_config, "db", None)
